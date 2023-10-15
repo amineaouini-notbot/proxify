@@ -1,8 +1,6 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 var app = require('express')();
-let cors = require('cors')
 
-app.use(cors())
 app.use('', createProxyMiddleware({
   target: 'https://youtube.com/', 
   changeOrigin: true,
