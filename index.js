@@ -1,11 +1,16 @@
-var proxy = require('express-http-proxy');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 var app = require('express')();
 
-app.use('/', proxy('/', {
-    userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
-      data = JSON.parse(proxyResData.toString('utf8'));
-      return JSON.stringify(data);
-    }
-  }));
+
+app.use('/', createProxyMiddleware({
+  target: 'https://translate.google.com/', 
+  changeOrigin: true,
+  onError: (err) =>{ console.log("12",err) },
+  onProxyRes: (proxyRes)=>{
+    console.log('test res')
+    return proxyRes
+  }
+}))
+
 
 app.listen(8080, ()=>{ console.log('Proxy is on!')})
