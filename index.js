@@ -1,14 +1,19 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 var app = require('express')();
+let cors = require('cors')
 
-
-app.use('/', createProxyMiddleware({
-  target: 'https://translate.google.com/', 
+app.use(cors())
+app.use('', createProxyMiddleware({
+  target: 'https://youtube.com/', 
   changeOrigin: true,
-  onError: (err) =>{ console.log("12",err) },
+  onError: (err) =>{ console.log(err) },
   onProxyRes: (proxyRes)=>{
-    console.log('test res')
+    // console.log(proxyRes.headers)
     return proxyRes
+  },
+  onProxyReq: (proxyReq)=>{
+    console.log(proxyReq.host, proxyReq.path)
+    return proxyReq
   }
 }))
 
